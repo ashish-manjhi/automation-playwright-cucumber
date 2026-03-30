@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<testsuite name="Cucumber" time="1.367" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-08-24T17:02:04.876Z">
-  <testcase classname="Test" name="Test the login functionality" time="0.364">
-    <system-out><![CDATA[Given I am logged in "System Admin".........................................passed]]></system-out>
-  </testcase>
-</testsuite>
