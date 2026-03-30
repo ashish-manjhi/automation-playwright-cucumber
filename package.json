@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test":"npm run clean && npx cucumber-js",
-    "clean":"rimraf ./reports/*.* --glob && rimraf ./reports/screenshots/*.png --glob"
+    "clean":"rimraf ./output/*.* --glob && rimraf ./output/screenshots/*.png --glob"
   },
   "keywords": [],
   "author": "",

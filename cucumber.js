@@ -1,10 +1,10 @@
 module.exports = {
   default: {
     parallel: 1,
-    format: ['html:reports/report.html',
-      'junit:reports/report.xml'
+    format: ['html:output/report.html',
+      'junit:output/report.xml'
     ],
-    require: ['step-definitions/**/*.js'],
+    require: ['step-definitions/**/*.js','setup/**/*.js'],
     paths: ['features/**/*.feature']
   }
 }
