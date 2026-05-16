@@ -29,27 +29,27 @@ Before(async function () {
   await globalPage.waitForResponse((response) =>
     response.url().includes("activeview"),
   );
-  this.page = globalPage;
+  page = globalPage;
   time = new Date();
 });
 
 BeforeStep(async function (scenario) {
-  console.log(scenario.pickleStep.text);
+  // console.log(scenario.pickleStep.text);
 });
 
-AfterStep(async function () {
-  console.log("step complete");
+AfterStep(async function (scenario) {
+  console.log(scenario.pickleStep.text);
 });
 
 After(async function () {
   const context = getBrowser();
   console.log(`Execution completed in ${(new Date() - time) / 1000} ms`);
-  context.close();
-  this.page.close();
+  await context.close();
+  await page.close();
 });
 
 AfterAll(async function () {
-  console.log("execution complete");
+  // console.log("execution complete");
 });
 
 module.exports = {
