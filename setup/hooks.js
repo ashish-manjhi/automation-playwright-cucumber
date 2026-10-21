@@ -6,9 +6,9 @@ const {
   After,
   AfterAll,
   setDefaultTimeout,
-} = require("@cucumber/cucumber");
-const { createPageInstance, getBrowser, getPage } = require("./global-setup");
-const { defaultTimeout, baseUrl, headless } = require("../config");
+} = require('@cucumber/cucumber');
+const { createPageInstance, getBrowser, getPage } = require('./global-setup');
+const { defaultTimeout, baseUrl, headless } = require('../config');
 
 setDefaultTimeout(defaultTimeout);
 
@@ -17,17 +17,17 @@ let time, globalPage;
 // const timeout = config.defaultTimeout;
 
 BeforeAll(async function () {
-  console.log("Execution started " + defaultTimeout);
+  console.log('Execution started ' + defaultTimeout);
 });
 
 Before(async function () {
-  globalPage = await createPageInstance("chromium", {
+  globalPage = await createPageInstance('chromium', {
     headless: headless,
-    args: ["--deny-permission-prompts"],
+    args: ['--deny-permission-prompts'],
   });
-  await globalPage.goto(baseUrl, { waitUntil: "domcontentloaded" });
+  await globalPage.goto(baseUrl, { waitUntil: 'domcontentloaded' });
   await globalPage.waitForResponse((response) =>
-    response.url().includes("activeview"),
+    response.url().includes('activeview'),
   );
   page = globalPage;
   time = new Date();
