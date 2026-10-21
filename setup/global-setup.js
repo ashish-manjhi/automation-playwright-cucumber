@@ -1,22 +1,22 @@
-const { chromium, firefox, webkit } = require("playwright");
-const { defaultTimeout } = require("../config");
+const { chromium, firefox, webkit } = require('playwright');
+const { defaultTimeout } = require('../config');
 
 let browser = null;
 let browserContext = null;
 let browserPage = null;
 
-async function launchBrowser(browserType = "chromium", options = {}) {
+async function launchBrowser(browserType = 'chromium', options = {}) {
   switch (browserType) {
-    case "chromium":
+    case 'chromium':
       browser = await chromium.launch(options);
       break;
-    case "firefox":
+    case 'firefox':
       browser = await firefox.launch(options);
       break;
-    case "webkit":
+    case 'webkit':
       browser = await webkit.launch(options);
     default:
-      throw new Error("Unsupported browser type");
+      throw new Error('Unsupported browser type');
   }
   return browser;
 }
@@ -26,7 +26,7 @@ async function createPageInstance(browserType, options) {
   browserContext = await browserIns.newContext();
   browserPage = await browserContext.newPage();
   browserPage.setDefaultTimeout(defaultTimeout);
-  browserPage.setDefaultNavigationTimeout(defaultTimeout)
+  browserPage.setDefaultNavigationTimeout(defaultTimeout);
   return browserPage;
 }
 
