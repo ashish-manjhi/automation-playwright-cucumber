@@ -15,6 +15,7 @@ async function launchBrowser(browserType = 'chromium', options = {}) {
       break;
     case 'webkit':
       browser = await webkit.launch(options);
+      break;
     default:
       throw new Error('Unsupported browser type');
   }

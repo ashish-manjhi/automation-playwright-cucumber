@@ -7,34 +7,30 @@ const {
   AfterAll,
   setDefaultTimeout,
 } = require('@cucumber/cucumber');
-const { createPageInstance, getBrowser, getPage } = require('./global-setup');
+const { createPageInstance, getBrowser } = require('./global-setup');
 const { defaultTimeout, baseUrl, headless } = require('../config');
 
 setDefaultTimeout(defaultTimeout);
 
-let time, globalPage;
-// const headless = config.headless;
-// const timeout = config.defaultTimeout;
+let time;
 
 BeforeAll(async function () {
-  console.log('Execution started ' + defaultTimeout);
+  console.log('Execution started');
 });
 
 Before(async function () {
-  globalPage = await createPageInstance('chromium', {
+  const globalPage = await createPageInstance('chromium', {
     headless: headless,
     args: ['--deny-permission-prompts'],
   });
-  await globalPage.goto(baseUrl, { waitUntil: 'domcontentloaded' });
-  await globalPage.waitForResponse((response) =>
-    response.url().includes('activeview'),
-  );
-  page = globalPage;
+  this.page = globalPage;
+  await this.page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+  await this.page.waitForTimeout(10000);
   time = new Date();
 });
 
 BeforeStep(async function (scenario) {
-  // console.log(scenario.pickleStep.text);
+  console.log(scenario.pickleStep.text);
 });
 
 AfterStep(async function (scenario) {
@@ -44,8 +40,8 @@ AfterStep(async function (scenario) {
 After(async function () {
   const context = getBrowser();
   console.log(`Execution completed in ${(new Date() - time) / 1000} ms`);
-  await context.close();
-  await page.close();
+  if (context) await context.close();
+  if (this.page) await this.page.close();
 });
 
 AfterAll(async function () {
@@ -53,5 +49,4 @@ AfterAll(async function () {
 });
 
 module.exports = {
-  //   page,
 };
