@@ -1,0 +1,2 @@
+prettier $(git diff --name-only --diff-filter d | grep -e '\.[jt]sx\?$' -e '\.json$' ) --write -u
+eslint $(git diff --name-only --diff-filter d | grep -e '\.[jt]sx\?$' -e '\.json$' ) --no-warn-ignored

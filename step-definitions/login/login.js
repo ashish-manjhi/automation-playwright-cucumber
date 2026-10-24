@@ -1,7 +1,7 @@
-const { Given, Then, When } = require('@cucumber/cucumber');
-const { getPage } = require('../../setup/global-setup');
-const { expect } = require('@playwright/test');
-const credentials = '../../data/credentials.json';
+const { Given } = require('@cucumber/cucumber');
+// const { getPage } = require('../../setup/global-setup');
+// const { expect } = require('@playwright/test');
+// const credentials = '../../data/credentials.json';
 
 Given('I am logged in {string}', async function (string) {
   await login(string);
