@@ -8,7 +8,7 @@ export default defineConfig([
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
     extends: ['js/recommended'],
-    languageOptions: { globals: globals.browser },
+    languageOptions: { globals: globals.node },
   },
   {
     files: ['**/*.json'],
@@ -16,15 +16,28 @@ export default defineConfig([
     language: 'json/json',
     extends: ['json/recommended'],
   },
+  {
+    files: ['**/*.jsonc'],
+    plugins: { json },
+    language: 'json/jsonc',
+    extends: ['json/recommended'],
+  },
 
   {
     rules: {
-      'no-unused-vars': 'warn',
-      'no-undef': 'warn',
+      'no-unused-vars': 'error',
+      'no-undef': 'error',
+      'no-duplicate-imports': 'error',
     },
   },
 
   {
-    ignores: ['dist/**', 'build/**', 'node_modules/**'],
+    ignores: [
+      'dist/**',
+      'build/**',
+      'node_modules/**',
+      'package.json',
+      'package-lock.json',
+    ],
   },
 ]);

@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run clean && npx cucumber-js",
-    "clean": "rimraf ./output/*.* --glob && rimraf ./output/screenshots/*.png --glob"
+    "clean": "rimraf ./output/*.* --glob && rimraf ./output/screenshots/*.png --glob",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
     "husky": "^9.1.7",
     "prettier": "^3.9.10",
     "rimraf": "^6.1.3"
