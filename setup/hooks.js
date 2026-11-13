@@ -2,7 +2,7 @@ const {
   BeforeAll,
   Before,
   BeforeStep,
-  AfterStep,
+  // AfterStep,
   After,
   AfterAll,
   setDefaultTimeout,
@@ -12,10 +12,14 @@ const { defaultTimeout, baseUrl, headless } = require('../config');
 
 setDefaultTimeout(defaultTimeout);
 
-let time;
+// let testTime, suiteTime;
+// let dateObj;
 
 BeforeAll(async function () {
-  console.log('Execution started');
+  // dateObj = new Date();
+  // console.log('Execution started ' + dateObj.toLocaleTimeString());
+  console.log('Execution started ');
+  // suiteTime = dateObj.getTime();
 });
 
 Before(async function () {
@@ -26,27 +30,29 @@ Before(async function () {
   this.page = globalPage;
   await this.page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
   await this.page.waitForTimeout(10000);
-  time = new Date();
+  // testTime = new Date().getTime();
 });
 
-BeforeStep(async function (scenario) {
-  console.log(scenario.pickleStep.text);
+BeforeStep(async function () {
+  // console.log(`Starting ${scenario.pickleStep.text}`);
 });
 
-AfterStep(async function (scenario) {
-  console.log(scenario.pickleStep.text);
-});
+// AfterStep(async function (scenario) {
+//   console.log(`Completed ${scenario.pickleStep.text}`);
+// });
 
 After(async function () {
   const context = getBrowser();
-  console.log(`Execution completed in ${(new Date() - time) / 1000} ms`);
+  // console.log(`Execution completed in ${(new Date() - testTime) / 1000} ms`);
+  // console.log(`Execution completed`);
   if (context) await context.close();
   if (this.page) await this.page.close();
 });
 
 AfterAll(async function () {
-  // console.log("execution complete");
+  console.log(
+    // `Suite Execution Complete in ${(new Date() - suiteTime) / 1000} ms`,
+  );
 });
 
-module.exports = {
-};
+module.exports = {};

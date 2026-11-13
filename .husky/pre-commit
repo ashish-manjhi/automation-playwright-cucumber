@@ -1,2 +1,6 @@
-prettier $(git diff --name-only --diff-filter d | grep -e '\.[jt]sx\?$' -e '\.json$' ) --write -u
-eslint $(git diff --name-only --diff-filter d | grep -e '\.[jt]sx\?$' -e '\.json$' ) --no-warn-ignored
+git diff --cached --name-only -z --diff-filter=ACMR | grep -zE '\.(jsx?|tsx?|json)$' | xargs -0 -r prettier --write
+git diff --cached --name-only -z --diff-filter=ACMR | grep -zE '\.(jsx?|tsx?|json)$' | xargs -0 -r eslint --max-warnings=0 --no-warn-ignored --fix
+
+git add -u
+
+git update-index --again
