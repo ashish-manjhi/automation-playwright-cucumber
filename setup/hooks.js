@@ -52,6 +52,7 @@ After(async function (scenario) {
   // console.log(`Execution completed in ${(new Date() - testTime) / 1000} ms`);
   // console.log(`Execution completed`);
   console.log(scenario.result?.status);
+  console.log(scenario.pickleStep.text);
   if (scenario.result?.status === 'FAILED') {
     await captureScreenshot(this.page, scenario);
   }
@@ -67,6 +68,7 @@ AfterAll(async function () {
 
 async function captureScreenshot(page, scenario) {
   // await page.screenshot({ path: 'screenshot.png', fullPage: true });
+  console.log(scenario.pickleStep.text);
   const fileName = scenario.pickleStep.text;
   const filePath = `./output/${scenario}/`;
   const screenshot = await page.screenshot({
