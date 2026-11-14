@@ -10,12 +10,12 @@ const {
 const { createPageInstance, getBrowser } = require('./global-setup');
 const { globalTimeout, baseUrl, headless } = require('../config');
 
-setDefaultTimeout(globalTimeout);
+await setDefaultTimeout(globalTimeout);
 
 // let testTime, suiteTime;
 // let dateObj;
 
-BeforeAll(async function () {
+BeforeAll(function () {
   // dateObj = new Date();
   // console.log('Execution started ' + dateObj.toLocaleTimeString());
   console.log('Execution started ');
