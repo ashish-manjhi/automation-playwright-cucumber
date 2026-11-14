@@ -34,7 +34,7 @@ Before(async function () {
   // testTime = new Date().getTime();
 });
 
-BeforeStep(async function () {
+BeforeStep(function () {
   // console.log(`Starting ${scenario.pickleStep.text}`);
 });
 
