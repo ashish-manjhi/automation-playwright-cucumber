@@ -10,7 +10,7 @@ const {
 const { createPageInstance, getBrowser } = require('./global-setup');
 const { globalTimeout, baseUrl, headless } = require('../config');
 
-await setDefaultTimeout(globalTimeout);
+setDefaultTimeout(globalTimeout);
 
 // let testTime, suiteTime;
 // let dateObj;
