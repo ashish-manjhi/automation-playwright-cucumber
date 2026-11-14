@@ -17,6 +17,10 @@ When(/^I search for maruti alto car$/, async function () {
 });
 
 Then('I verify the search results', async function () {
+  await this.page
+    .locator('[data-aut-id="itemTitle"]')
+    .first()
+    .waitFor({ state: 'visible' });
   const adTitleText = await this.page
     .locator('[data-aut-id="itemTitle"]')
     .first()

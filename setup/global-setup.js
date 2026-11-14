@@ -27,7 +27,7 @@ async function createPageInstance(browserType, options) {
   browserContext = await browserIns.newContext();
   browserPage = await browserContext.newPage();
   browserPage.setDefaultTimeout(globalTimeout);
-  browserPage.setDefaultNavigationTimeout();
+  browserPage.setDefaultNavigationTimeout(globalTimeout);
   return browserPage;
 }
 
