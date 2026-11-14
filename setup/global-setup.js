@@ -1,5 +1,5 @@
 const { chromium, firefox, webkit } = require('playwright');
-const { defaultTimeout, globalTimeout } = require('../config');
+const { globalTimeout } = require('../config');
 
 let browser = null;
 let browserContext = null;
