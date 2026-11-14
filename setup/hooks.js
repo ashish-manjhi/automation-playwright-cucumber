@@ -5,12 +5,12 @@ const {
   // AfterStep,
   After,
   AfterAll,
-  setDefaultTimeout,
+  // setDefaultTimeout,
 } = require('@cucumber/cucumber');
 const { createPageInstance, getBrowser } = require('./global-setup');
 const { defaultTimeout, baseUrl, headless } = require('../config');
 
-setDefaultTimeout(defaultTimeout);
+// setDefaultTimeout(defaultTimeout);
 
 // let testTime, suiteTime;
 // let dateObj;
@@ -28,6 +28,7 @@ Before(async function () {
     args: ['--deny-permission-prompts'],
   });
   this.page = globalPage;
+  await this.page.setDefaultTimeout(defaultTimeout);
   await this.page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
   await this.page.waitForTimeout(10000);
   // testTime = new Date().getTime();
