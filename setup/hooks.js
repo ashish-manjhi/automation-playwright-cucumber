@@ -51,6 +51,9 @@ After(async function (scenario) {
   const context = getBrowser();
   // console.log(`Execution completed in ${(new Date() - testTime) / 1000} ms`);
   // console.log(`Execution completed`);
+  console.log(scenario);
+  console.log(scenario.pickleStep);
+  console.log(scenario.pickleStep.text);
   console.log(scenario.result?.status);
   console.log(scenario.pickleStep.text);
   if (scenario.result?.status === 'FAILED') {
