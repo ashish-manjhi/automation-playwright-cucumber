@@ -68,8 +68,9 @@ AfterAll(async function () {
 async function captureScreenshot(page, scenario) {
   // await page.screenshot({ path: 'screenshot.png', fullPage: true });
   const fileName = scenario.pickleStep.text;
+  const filePath = `./output/${scenario}/`;
   const screenshot = await page.screenshot({
-    path: `${fileName}.png`,
+    path: `${filePath}${fileName}.png`,
     fullPage: true,
   });
   // Attach the buffer to the Cucumber report
