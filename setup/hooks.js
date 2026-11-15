@@ -46,16 +46,16 @@ AfterStep(async function (scenario) {
     const screenshot = await captureScreenshot(this.page, scenario, stepCount);
     await this.attach(screenshot, 'image/png');
   }
-  stepCount = stepCount + 1;
-});
-
-After(async function (scenario) {
-  const context = getBrowser();
   if (scenario.result?.status === 'FAILED') {
     const screenshot = await captureScreenshot(this.page, scenario);
     await this.attach(screenshot, 'image/png');
     console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
   }
+  stepCount = stepCount + 1;
+});
+
+After(async function (scenario) {
+  const context = getBrowser();
   const totalSeconds = (new Date().getTime() - testTime) / 1000;
   const timeInMin = Math.trunc(totalSeconds / 60);
   const remSec = totalSeconds % 60;
