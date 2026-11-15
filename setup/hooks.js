@@ -1,8 +1,7 @@
 const {
   BeforeAll,
   Before,
-  BeforeStep,
-  // AfterStep,
+  AfterStep,
   After,
   AfterAll,
   setDefaultTimeout,
@@ -10,76 +9,85 @@ const {
 const { createPageInstance, getBrowser } = require('./global-setup');
 const {
   defaultTimeout,
-  globalTimeout,
   baseUrl,
   headless,
+  stepScreenshots,
 } = require('../config');
 
-setDefaultTimeout(globalTimeout);
+setDefaultTimeout(defaultTimeout);
 
-// let testTime, suiteTime;
-// let dateObj;
+let testTime = 0,
+  suiteTime = 0;
+let stepCount = 0;
 
 BeforeAll(function () {
-  // dateObj = new Date();
-  // console.log('Execution started ' + dateObj.toLocaleTimeString());
-  console.log('Execution started ');
-  // suiteTime = dateObj.getTime();
+  console.log('Suite execution started ');
+  suiteTime = new Date().getTime();
 });
 
 Before(async function () {
+  stepCount = 0;
   const globalPage = await createPageInstance('chromium', {
     headless: headless,
     args: ['--deny-permission-prompts'],
   });
   this.page = globalPage;
   await this.page.setDefaultTimeout(defaultTimeout);
-  await this.page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+  await this.page.goto(baseUrl, {
+    waitUntil: 'domcontentloaded',
+    timeout: defaultTimeout,
+  });
   await this.page.waitForTimeout(10000);
-  // testTime = new Date().getTime();
+  testTime = new Date().getTime();
 });
 
-BeforeStep(function () {
-  // console.log(`Starting ${scenario.pickleStep.text}`);
+AfterStep(async function (scenario) {
+  if (stepScreenshots) {
+    const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+    await this.attach(screenshot, 'image/png');
+  }
+  stepCount = stepCount + 1;
 });
-
-// AfterStep(async function (scenario) {
-//   console.log(`Completed ${scenario.pickleStep.text}`);
-// });
 
 After(async function (scenario) {
   const context = getBrowser();
-  // console.log(`Execution completed in ${(new Date() - testTime) / 1000} ms`);
-  // console.log(`Execution completed`);
-  console.log(scenario);
-  console.log(scenario.pickleStep);
-  console.log(scenario.pickleStep.text);
-  console.log(scenario.result?.status);
-  console.log(scenario.pickleStep.text);
   if (scenario.result?.status === 'FAILED') {
-    await captureScreenshot(this.page, scenario);
+    const screenshot = await captureScreenshot(this.page, scenario);
+    await this.attach(screenshot, 'image/png');
+    console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
   }
+  const totalSeconds = (new Date().getTime() - testTime) / 1000;
+  const timeInMin = Math.trunc(totalSeconds / 60);
+  const remSec = totalSeconds % 60;
+
+  console.log(
+    `"${scenario.pickle.name}" execution completed in ${timeInMin}m ${remSec}s`,
+  );
   if (context) await context.close();
   if (this.page) await this.page.close();
 });
 
 AfterAll(async function () {
-  console.log(
-    // `Suite Execution Complete in ${(new Date() - suiteTime) / 1000} ms`,
-  );
+  const totalSeconds = (new Date().getTime() - suiteTime) / 1000;
+  const timeInMin = Math.trunc(totalSeconds / 60);
+  const remSec = totalSeconds % 60;
+  console.log(`Suite execution completed in ${timeInMin}m ${remSec}s`);
 });
 
-async function captureScreenshot(page, scenario) {
-  // await page.screenshot({ path: 'screenshot.png', fullPage: true });
-  console.log(scenario.pickleStep.text);
-  const fileName = scenario.pickleStep.text;
-  const filePath = `./output/${scenario}/`;
-  const screenshot = await page.screenshot({
-    path: `${filePath}${fileName}.png`,
-    fullPage: true,
+async function captureScreenshot(page, scenario, stepCount) {
+  const testCaseId = scenario.pickle.name.match(
+    new RegExp(/^(TC-[0-9].+?[ ])/gim),
+  );
+  const fileName = scenario.pickle.steps[stepCount].text;
+  const folderName = testCaseId[0].trim();
+
+  const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_')}.png`;
+  console.log(filePath);
+  const pageScreenshot = await page.screenshot({
+    path: filePath,
+    type: 'png',
   });
-  // Attach the buffer to the Cucumber report
-  await this.attach(screenshot, 'image/png');
+  return pageScreenshot;
 }
 
 module.exports = {};
