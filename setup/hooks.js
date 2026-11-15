@@ -11,7 +11,7 @@ const {
   defaultTimeout,
   baseUrl,
   headless,
-  stepScreenshots,
+  // stepScreenshots,
 } = require('../config');
 
 setDefaultTimeout(defaultTimeout);
@@ -20,9 +20,9 @@ let testTime = 0,
   suiteTime = 0;
 let stepCount = 0;
 
-BeforeAll(function () {
+BeforeAll(async function () {
   console.log('Suite execution started ');
-  suiteTime = new Date().getTime();
+  suiteTime = await new Date().getTime();
 });
 
 Before(async function () {
@@ -42,10 +42,10 @@ Before(async function () {
 });
 
 AfterStep(async function (scenario) {
-  if (stepScreenshots) {
-    const screenshot = await captureScreenshot(this.page, scenario, stepCount);
-    await this.attach(screenshot, 'image/png');
-  }
+  // if (stepScreenshots) {
+  const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+  await this.attach(screenshot, 'image/png');
+  // }
   stepCount = stepCount + 1;
 });
 
@@ -69,7 +69,7 @@ After(async function (scenario) {
 });
 
 AfterAll(async function () {
-  const totalSeconds = (await (new Date().getTime() - suiteTime)) / 1000;
+  const totalSeconds = await ((new Date().getTime() - suiteTime) / 1000);
   const timeInMin = await Math.trunc(totalSeconds / 60);
   const remSec = await (totalSeconds % 60).toString().substring(0, 4);
   console.log(`Suite execution completed in ${timeInMin}m ${remSec}s`);
