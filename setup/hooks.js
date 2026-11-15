@@ -83,7 +83,7 @@ async function captureScreenshot(page, scenario, stepCount) {
   const folderName = testCaseId[0].trim();
 
   const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_')}.png`;
-  console.log(filePath);
+
   const pageScreenshot = await page.screenshot({
     path: filePath,
     type: 'png',
