@@ -68,19 +68,19 @@ After(async function (scenario) {
   if (this.page) await this.page.close();
 });
 
-AfterAll(function () {
-  const totalSeconds = (new Date().getTime() - suiteTime) / 1000;
-  const timeInMin = Math.trunc(totalSeconds / 60);
-  const remSec = (totalSeconds % 60).toString().substring(0, 4);
+AfterAll(async function () {
+  const totalSeconds = (await (new Date().getTime() - suiteTime)) / 1000;
+  const timeInMin = await Math.trunc(totalSeconds / 60);
+  const remSec = await (totalSeconds % 60).toString().substring(0, 4);
   console.log(`Suite execution completed in ${timeInMin}m ${remSec}s`);
 });
 
 async function captureScreenshot(page, scenario, stepCount) {
-  const testCaseId = scenario.pickle.name.match(
+  const testCaseId = await scenario.pickle.name.match(
     new RegExp(/^(TC-[0-9].+?[ ])/gim),
   );
-  const fileName = scenario.pickle.steps[stepCount].text;
-  const folderName = testCaseId[0].trim();
+  const fileName = await scenario.pickle.steps[stepCount].text;
+  const folderName = await testCaseId[0].trim();
 
   const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_')}.png`;
 
