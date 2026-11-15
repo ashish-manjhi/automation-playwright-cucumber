@@ -56,7 +56,7 @@ After(async function (scenario) {
   const remSec = (totalSeconds % 60).toString().substring(0, 4);
 
   if (scenario.result?.status === 'FAILED') {
-    const screenshot = await captureScreenshot(this.page, scenario);
+    const screenshot = await captureScreenshot(this.page, scenario, stepCount);
     await this.attach(screenshot, 'image/png');
     console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
   }
