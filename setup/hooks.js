@@ -46,11 +46,6 @@ AfterStep(async function (scenario) {
     const screenshot = await captureScreenshot(this.page, scenario, stepCount);
     await this.attach(screenshot, 'image/png');
   }
-  if (scenario.result?.status === 'FAILED') {
-    const screenshot = await captureScreenshot(this.page, scenario);
-    await this.attach(screenshot, 'image/png');
-    console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
-  }
   stepCount = stepCount + 1;
 });
 
@@ -58,7 +53,13 @@ After(async function (scenario) {
   const context = getBrowser();
   const totalSeconds = (new Date().getTime() - testTime) / 1000;
   const timeInMin = Math.trunc(totalSeconds / 60);
-  const remSec = totalSeconds % 60;
+  const remSec = (totalSeconds % 60).toString().substring(0, 4);
+
+  if (scenario.result?.status === 'FAILED') {
+    const screenshot = await captureScreenshot(this.page, scenario);
+    await this.attach(screenshot, 'image/png');
+    console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
+  }
 
   console.log(
     `"${scenario.pickle.name}" execution completed in ${timeInMin}m ${remSec}s`,
@@ -70,7 +71,7 @@ After(async function (scenario) {
 AfterAll(function () {
   const totalSeconds = (new Date().getTime() - suiteTime) / 1000;
   const timeInMin = Math.trunc(totalSeconds / 60);
-  const remSec = totalSeconds % 60;
+  const remSec = (totalSeconds % 60).toString().substring(0, 4);
   console.log(`Suite execution completed in ${timeInMin}m ${remSec}s`);
 });
 
