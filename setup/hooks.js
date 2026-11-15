@@ -67,7 +67,7 @@ After(async function (scenario) {
   if (this.page) await this.page.close();
 });
 
-AfterAll(async function () {
+AfterAll(function () {
   const totalSeconds = (new Date().getTime() - suiteTime) / 1000;
   const timeInMin = Math.trunc(totalSeconds / 60);
   const remSec = totalSeconds % 60;
