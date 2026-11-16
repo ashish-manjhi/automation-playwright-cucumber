@@ -35,7 +35,6 @@ Before(async function () {
   await this.page.setDefaultTimeout(defaultTimeout);
   await this.page.goto(baseUrl, {
     waitUntil: 'domcontentloaded',
-    timeout: defaultTimeout,
   });
   await this.page.waitForTimeout(10000);
   testTime = new Date().getTime();
