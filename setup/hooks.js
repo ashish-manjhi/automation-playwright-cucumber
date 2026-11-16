@@ -1,58 +1,93 @@
 const {
   BeforeAll,
   Before,
-  BeforeStep,
-  // AfterStep,
+  AfterStep,
   After,
   AfterAll,
   setDefaultTimeout,
 } = require('@cucumber/cucumber');
 const { createPageInstance, getBrowser } = require('./global-setup');
-const { defaultTimeout, baseUrl, headless } = require('../config');
+const {
+  defaultTimeout,
+  baseUrl,
+  headless,
+  stepScreenshots,
+} = require('../config');
 
 setDefaultTimeout(defaultTimeout);
 
-// let testTime, suiteTime;
-// let dateObj;
+let testTime = 0,
+  suiteTime = 0;
+let stepCount = 0;
 
 BeforeAll(async function () {
-  // dateObj = new Date();
-  // console.log('Execution started ' + dateObj.toLocaleTimeString());
-  console.log('Execution started ');
-  // suiteTime = dateObj.getTime();
+  console.log('Suite execution started ');
+  suiteTime = await new Date().getTime();
 });
 
 Before(async function () {
+  stepCount = 0;
   const globalPage = await createPageInstance('chromium', {
     headless: headless,
     args: ['--deny-permission-prompts'],
   });
   this.page = globalPage;
-  await this.page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+  await this.page.setDefaultTimeout(defaultTimeout);
+  await this.page.goto(baseUrl, {
+    waitUntil: 'domcontentloaded',
+  });
   await this.page.waitForTimeout(10000);
-  // testTime = new Date().getTime();
+  testTime = new Date().getTime();
 });
 
-BeforeStep(async function () {
-  // console.log(`Starting ${scenario.pickleStep.text}`);
+AfterStep(async function (scenario) {
+  if (stepScreenshots) {
+    const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+    await this.attach(screenshot, 'image/png');
+  }
+  stepCount = stepCount + 1;
 });
 
-// AfterStep(async function (scenario) {
-//   console.log(`Completed ${scenario.pickleStep.text}`);
-// });
-
-After(async function () {
+After(async function (scenario) {
   const context = getBrowser();
-  // console.log(`Execution completed in ${(new Date() - testTime) / 1000} ms`);
-  // console.log(`Execution completed`);
+  const totalSeconds = (new Date().getTime() - testTime) / 1000;
+  const timeInMin = Math.trunc(totalSeconds / 60);
+  const remSec = (totalSeconds % 60).toString().substring(0, 4);
+
+  if (scenario.result?.status === 'FAILED') {
+    const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+    await this.attach(screenshot, 'image/png');
+    console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
+  }
+
+  console.log(
+    `"${scenario.pickle.name}" execution completed in ${timeInMin}m ${remSec}s`,
+  );
   if (context) await context.close();
   if (this.page) await this.page.close();
 });
 
 AfterAll(async function () {
-  console.log(
-    // `Suite Execution Complete in ${(new Date() - suiteTime) / 1000} ms`,
-  );
+  const totalSeconds = await ((new Date().getTime() - suiteTime) / 1000);
+  const timeInMin = await Math.trunc(totalSeconds / 60);
+  const remSec = await (totalSeconds % 60).toString().substring(0, 4);
+  console.log(`Suite execution completed in ${timeInMin}m ${remSec}s`);
 });
+
+async function captureScreenshot(page, scenario, stepCount) {
+  const testCaseId = await scenario.pickle.name.match(
+    new RegExp(/^(TC-[0-9].+?[ ])/gim),
+  );
+  const fileName = await scenario.pickle.steps[stepCount].text;
+  const folderName = await testCaseId[0].trim();
+
+  const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_')}.png`;
+
+  const pageScreenshot = await page.screenshot({
+    path: filePath,
+    type: 'png',
+  });
+  return pageScreenshot;
+}
 
 module.exports = {};

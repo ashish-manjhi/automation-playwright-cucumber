@@ -1,5 +1,5 @@
 const { chromium, firefox, webkit } = require('playwright');
-const { globalTimeout } = require('../config');
+const { defaultTimeout } = require('../config');
 
 let browser = null;
 let browserContext = null;
@@ -26,8 +26,8 @@ async function createPageInstance(browserType, options) {
   const browserIns = await launchBrowser(browserType, options);
   browserContext = await browserIns.newContext();
   browserPage = await browserContext.newPage();
-  browserPage.setDefaultTimeout(globalTimeout);
-  browserPage.setDefaultNavigationTimeout();
+  browserPage.setDefaultTimeout(defaultTimeout);
+  browserPage.setDefaultNavigationTimeout(defaultTimeout);
   return browserPage;
 }
 

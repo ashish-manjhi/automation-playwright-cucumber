@@ -3,6 +3,7 @@ const { When, Then } = require('@cucumber/cucumber');
 When(/^I search for maruti alto car$/, async function () {
   //   console.log(currentPage);
   //   console.log(globalPage);
+  console.log('started search');
   await this.page
     .locator('input[data-aut-id="searchBox"]')
     .waitFor({ state: 'visible' });
@@ -14,9 +15,14 @@ When(/^I search for maruti alto car$/, async function () {
     .locator('[data-aut-id="itemTitle"]')
     .first()
     .waitFor({ state: 'visible' });
+  console.log('Completed search');
 });
 
 Then('I verify the search results', async function () {
+  await this.page
+    .locator('[data-aut-id="itemTitle"]')
+    .first()
+    .waitFor({ state: 'visible' });
   const adTitleText = await this.page
     .locator('[data-aut-id="itemTitle"]')
     .first()
