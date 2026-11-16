@@ -41,10 +41,10 @@ Before(async function () {
   testTime = new Date().getTime();
 });
 
-AfterStep(async function (scenario) {
+AfterStep(function () {
   // if (stepScreenshots) {
-  const screenshot = await captureScreenshot(this.page, scenario, stepCount);
-  await this.attach(screenshot, 'image/png');
+  // const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+  // await this.attach(screenshot, 'image/png');
   // }
   stepCount = stepCount + 1;
 });
