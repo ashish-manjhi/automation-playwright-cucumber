@@ -39,6 +39,7 @@ Before(async function () {
   });
   await this.page.waitForTimeout(10000);
   testTime = new Date().getTime();
+  console.log('before completed');
 });
 
 AfterStep(function () {
@@ -47,6 +48,7 @@ AfterStep(function () {
   // await this.attach(screenshot, 'image/png');
   // }
   stepCount = stepCount + 1;
+  console.log('AfterStep completed');
 });
 
 After(async function (scenario) {
@@ -66,6 +68,7 @@ After(async function (scenario) {
   );
   if (context) await context.close();
   if (this.page) await this.page.close();
+  console.log('After completed');
 });
 
 AfterAll(async function () {
