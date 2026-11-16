@@ -1,7 +1,7 @@
 const {
   BeforeAll,
   Before,
-  // AfterStep,
+  AfterStep,
   After,
   AfterAll,
   setDefaultTimeout,
@@ -11,7 +11,7 @@ const {
   defaultTimeout,
   baseUrl,
   headless,
-  // stepScreenshots,
+  stepScreenshots,
 } = require('../config');
 
 setDefaultTimeout(defaultTimeout);
@@ -38,17 +38,15 @@ Before(async function () {
   });
   await this.page.waitForTimeout(10000);
   testTime = new Date().getTime();
-  console.log('before completed');
 });
 
-// AfterStep(function () {
-//   // if (stepScreenshots) {
-//   // const screenshot = await captureScreenshot(this.page, scenario, stepCount);
-//   // await this.attach(screenshot, 'image/png');
-//   // }
-//   stepCount = stepCount + 1;
-//   console.log('AfterStep completed');
-// });
+AfterStep(async function (scenario) {
+  if (stepScreenshots) {
+    const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+    await this.attach(screenshot, 'image/png');
+  }
+  stepCount = stepCount + 1;
+});
 
 After(async function (scenario) {
   const context = getBrowser();
@@ -67,7 +65,6 @@ After(async function (scenario) {
   );
   if (context) await context.close();
   if (this.page) await this.page.close();
-  console.log('After completed');
 });
 
 AfterAll(async function () {
