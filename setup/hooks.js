@@ -1,7 +1,7 @@
 const {
   BeforeAll,
   Before,
-  AfterStep,
+  // AfterStep,
   After,
   AfterAll,
   setDefaultTimeout,
@@ -42,14 +42,14 @@ Before(async function () {
   console.log('before completed');
 });
 
-AfterStep(function () {
-  // if (stepScreenshots) {
-  // const screenshot = await captureScreenshot(this.page, scenario, stepCount);
-  // await this.attach(screenshot, 'image/png');
-  // }
-  stepCount = stepCount + 1;
-  console.log('AfterStep completed');
-});
+// AfterStep(function () {
+//   // if (stepScreenshots) {
+//   // const screenshot = await captureScreenshot(this.page, scenario, stepCount);
+//   // await this.attach(screenshot, 'image/png');
+//   // }
+//   stepCount = stepCount + 1;
+//   console.log('AfterStep completed');
+// });
 
 After(async function (scenario) {
   const context = getBrowser();
