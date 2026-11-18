@@ -81,7 +81,7 @@ async function captureScreenshot(page, scenario, stepCount) {
   const fileName = await scenario.pickle.steps[stepCount].text;
   const folderName = await testCaseId[0].trim();
 
-  const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_')}.png`;
+  const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_').replaceAll('"', '')}.png`;
 
   const pageScreenshot = await page.screenshot({
     path: filePath,
