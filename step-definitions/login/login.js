@@ -20,24 +20,25 @@ Given('I navigate to the login page', async function () {
 });
 
 async function login(page) {
-  await page.locator('[id="username"]:not[disabled]').fill('student');
+  await page.locator('[id="username"]').click();
+  await page.locator('[id="username"]').fill('student');
   await page.locator('input[name="password"]').fill('Password123');
   await page.locator('[id="submit"]').click();
-  console.log('Logging in');
 }
 
 Then('I see successful login message', async function () {
   const successfulLoginMessage = await this.page
     .locator('[class="post-title"]')
     .textContent();
-  await expect(successfulLoginMessage).toContainText('Logged In Successfully');
+  await expect(successfulLoginMessage).toContain('Logged In Successfully');
   const strudentGreetingMessage = await this.page
     .locator('[class="post-content"]>>strong')
     .textContent();
-  await expect(strudentGreetingMessage).toContainText(
+  await expect(strudentGreetingMessage).toContain(
     'Congratulations student. You successfully logged in!',
   );
   await expect(await this.page.url()).toContain(
     'practicetestautomation.com/logged-in-successfully/',
   );
+  await this.page.locator("a>>text='Log out'").click();
 });
