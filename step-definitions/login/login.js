@@ -1,37 +1,44 @@
-// const { Given } = require('@cucumber/cucumber');
-// // const { getPage } = require('../../setup/global-setup');
-// // const { expect } = require('@playwright/test');
-// // const credentials = '../../data/credentials.json';
+const { Given, When, Then } = require('@cucumber/cucumber');
+const { expect } = require('@playwright/test');
+// const credentials = '../../data/credentials.json';
 
-// const browserPage = getPage();
-// Given('I am logged in {string}', async function (string) {
-//   await login(string);
-// });
+When('I am logged in as User', async function () {
+  await login(this.page);
+});
 
-// async function login(user) {
-//   await browserPage.waitForTimeout(5000);
-//   await browserPage
-//     .locator('//button[@data-aut-id="btnLogin"]')
-//     .waitFor({ state: 'visible' });
-//   await browserPage.locator('//button[@data-aut-id="btnLogin"]').click();
-//   await browserPage.waitForSelector('[data-aut-id="emailLogin"]');
-//   await browserPage.locator('[data-aut-id="emailLogin"]').click();
-//   await browserPage.waitForTimeout(3000);
-//   await browserPage.waitForSelector('[id="email_input_field"]');
-//   // await expect(browserPage.locator('[data-aut-id="submitBtn"]')).toBeDisabled();
-//   await browserPage.waitForTimeout(3000);
-//   await browserPage.locator('[id="email_input_field"]').click();
-//   await browserPage.locator('[id="email_input_field"]').fill(username);
-//   await browserPage.waitForTimeout(3000);
-//   // await browserPage.waitForSelector('[data-aut-id="submitBtn"]:not[disabled]');
-//   await browserPage
-//     .locator('[data-aut-id="submitBtn"]')
-//     .waitFor({ state: 'visible' });
-//   await browserPage.locator('[data-aut-id="submitBtn"]').click();
-//   await browserPage.waitForTimeout(3000);
-//   await browserPage.locator('input[name="password"]').fill(password);
-//   await browserPage.waitForTimeout(3000);
-//   await browserPage.locator('button[data-aut-id="login-form-submit"]').click();
+Given('I navigate to the login page', async function () {
+  const isPopupVisible = await this.page
+    .locator('button[class="formkit-close"]')
+    .first()
+    .isVisible();
+  if (isPopupVisible) {
+    await this.page.locator('button[class="formkit-close"]').first().click();
+  }
+  await this.page.locator('a>> text=Practice').first().click();
+  await this.page.locator("a>>text='Test Login Page'").first().click();
+  await this.page.waitForTimeout(5000);
+});
 
-//   console.log('Logging in');
-// }
+async function login(page) {
+  await page.locator('[id="username"]').click();
+  await page.locator('[id="username"]').fill('student');
+  await page.locator('input[name="password"]').fill('Password123');
+  await page.locator('[id="submit"]').click();
+}
+
+Then('I see successful login message', async function () {
+  const successfulLoginMessage = await this.page
+    .locator('[class="post-title"]')
+    .textContent();
+  await expect(successfulLoginMessage).toContain('Logged In Successfully');
+  const strudentGreetingMessage = await this.page
+    .locator('[class="post-content"]>>strong')
+    .textContent();
+  await expect(strudentGreetingMessage).toContain(
+    'Congratulations student. You successfully logged in!',
+  );
+  await expect(await this.page.url()).toContain(
+    'practicetestautomation.com/logged-in-successfully/',
+  );
+  await this.page.locator("a>>text='Log out'").click();
+});

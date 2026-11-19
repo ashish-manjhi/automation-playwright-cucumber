@@ -16,8 +16,8 @@ const {
 
 setDefaultTimeout(defaultTimeout);
 
-let testTime = 0,
-  suiteTime = 0;
+// let testTime = 0;
+let suiteTime = 0;
 let stepCount = 0;
 
 BeforeAll(async function () {
@@ -37,7 +37,7 @@ Before(async function () {
     waitUntil: 'domcontentloaded',
   });
   await this.page.waitForTimeout(10000);
-  testTime = new Date().getTime();
+  // testTime = new Date().getTime();
 });
 
 AfterStep(async function (scenario) {
@@ -50,9 +50,9 @@ AfterStep(async function (scenario) {
 
 After(async function (scenario) {
   const context = getBrowser();
-  const totalSeconds = (new Date().getTime() - testTime) / 1000;
-  const timeInMin = Math.trunc(totalSeconds / 60);
-  const remSec = (totalSeconds % 60).toString().substring(0, 4);
+  // const totalSeconds = (new Date().getTime() - testTime) / 1000;
+  // const timeInMin = Math.trunc(totalSeconds / 60);
+  // const remSec = (totalSeconds % 60).toString().substring(0, 4);
 
   if (scenario.result?.status === 'FAILED') {
     const screenshot = await captureScreenshot(this.page, scenario, stepCount);
@@ -60,9 +60,9 @@ After(async function (scenario) {
     console.log(`${scenario.pickle.steps[stepCount].text} - FAILED`);
   }
 
-  console.log(
-    `"${scenario.pickle.name}" execution completed in ${timeInMin}m ${remSec}s`,
-  );
+  // console.log(
+  //   `"${scenario.pickle.name}" execution completed in ${timeInMin}m ${remSec}s`,
+  // );
   if (context) await context.close();
   if (this.page) await this.page.close();
 });
@@ -81,7 +81,7 @@ async function captureScreenshot(page, scenario, stepCount) {
   const fileName = await scenario.pickle.steps[stepCount].text;
   const folderName = await testCaseId[0].trim();
 
-  const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_')}.png`;
+  const filePath = `./output/screenshots/${folderName}/${fileName.replaceAll(' ', '_').replaceAll('"', '')}.png`;
 
   const pageScreenshot = await page.screenshot({
     path: filePath,
