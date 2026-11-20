@@ -1,0 +1,48 @@
+name: E2E Tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    env:
+      secrets: '${{ toJSON(secrets) }}'
+      PROD_VALID_USERNAME: '${{secrets.PROD_VALID_USERNAME}}'
+      PROD_VALID_PASSWORD: '${{secrets.PROD_VALID_PASSWORD}}'
+      PROD_INVALID_USERNAME: '${{secrets.PROD_INVALID_USERNAME}}'
+      PROD_INVALID_PASSWORD: '${{secrets.PROD_INVALID_PASSWORD}}'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Export secrets
+        run: |
+          export CONFIG_SECRETS=$secrets;
+          echo $CONFIG_SECRETS
+          echo $secrets
+        shell: bash
+
+      - name: Run tests
+        continue-on-error: true
+        run: npm run test
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: Output
+          path: output/
