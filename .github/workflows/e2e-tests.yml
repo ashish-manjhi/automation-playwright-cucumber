@@ -8,6 +8,7 @@ jobs:
   test:
     env:
       secrets: '${{ toJSON(secrets) }}'
+      PROD_VALID_USERNAME: ${{ secrets.PROD_VALID_USERNAME }}
 
     runs-on: ubuntu-latest
 
