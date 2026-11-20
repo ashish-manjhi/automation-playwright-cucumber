@@ -12,8 +12,6 @@ jobs:
       PROD_VALID_PASSWORD: ${{ secrets.PROD_VALID_PASSWORD }}
       PROD_INVALID_USERNAME: ${{ secrets.PROD_INVALID_USERNAME }}
       PROD_INVALID_PASSWORD: ${{ secrets.PROD_INVALID_PASSWORD }}
-      echo ${{ secrets.PROD_VALID_USERNAME }}
-      echo $PROD_INVALID_PASSWORD
 
     runs-on: ubuntu-latest
 
