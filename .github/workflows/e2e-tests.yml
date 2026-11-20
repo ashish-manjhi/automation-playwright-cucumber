@@ -29,7 +29,8 @@ jobs:
       - name: Export secrets
         run: |
           export CONFIG_SECRETS=$secrets;
-          echo CONFIG_SECRETS
+          echo $CONFIG_SECRETS
+          echo $secrets
         shell: bash
 
       - name: Run tests
