@@ -32,10 +32,7 @@ jobs:
 
       - name: Export secrets
         run: |
-          # echo $secrets
-          # echo $PROD_VALID_USERNAME
           export CONFIG_SECRETS=$secrets;
-          # echo CONFIG_SECRETS
         shell: bash
 
       - name: Run tests
