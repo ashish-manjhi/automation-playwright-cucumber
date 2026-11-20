@@ -32,11 +32,8 @@ jobs:
 
       - name: Export secrets
         run: |
-          echo $secrets
-          echo $PROD_VALID_USERNAME
-          echo $PROD_VALID_PASSWORD
-          echo $PROD_INVALID_USERNAME
-          echo $PROD_INVALID_PASSWORD
+          # echo $secrets
+          # echo $PROD_VALID_USERNAME
           export CONFIG_SECRETS=$secrets;
           # echo CONFIG_SECRETS
         shell: bash
