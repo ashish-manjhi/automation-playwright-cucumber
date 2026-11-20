@@ -8,6 +8,10 @@ jobs:
   test:
     env:
       secrets: '${{ toJSON(secrets) }}'
+      PROD_VALID_USERNAME: '${{secrets.PROD_VALID_USERNAME}}'
+      PROD_VALID_PASSWORD: '${{secrets.PROD_VALID_PASSWORD}}'
+      PROD_INVALID_USERNAME: '${{secrets.PROD_INVALID_USERNAME}}'
+      PROD_INVALID_PASSWORD: '${{secrets.PROD_INVALID_PASSWORD}}'
 
     runs-on: ubuntu-latest
 

@@ -1,5 +1,9 @@
-console.log(process.env.CONFIG_SECRETS);
-const secrets = JSON.parse(`${process.env.CONFIG_SECRETS}`);
+// console.log(process.env.CONFIG_SECRETS);
+// const secrets = JSON.parse(`${process.env.CONFIG_SECRETS}`);
+console.log(process.env.PROD_INVALID_PASSWORD);
+console.log(process.env.PROD_INVALID_USERNAME);
+console.log(process.env.PROD_VALID_USERNAME);
+console.log(process.env.PROD_VALID_PASSWORD);
 
 module.exports = {
   headless: true,
@@ -7,16 +11,16 @@ module.exports = {
   baseUrl: process.env.baseUrl ?? 'https://practicetestautomation.com/',
   defaultTimeout: 180000,
   testTimeout: 180000,
-  validUsername: secrets.PROD_VALID_USERNAME
-    ? `${secrets.PROD_VALID_USERNAME}`
-    : 'student',
-  validPassword: secrets.PROD_VALID_PASSWORD
-    ? `${secrets.PROD_VALID_PASSWORD}`
-    : 'Password123',
-  invalidUsername: secrets.PROD_INVALID_USERNAME
-    ? `${secrets.PROD_INVALID_USERNAME}`
-    : 'stude',
-  invalidPassword: secrets.PROD_INVALID_PASSWORD
-    ? `${secrets.PROD_INVALID_PASSWORD}`
-    : 'Password',
+  // validUsername: secrets.PROD_VALID_USERNAME
+  //   ? `${secrets.PROD_VALID_USERNAME}`
+  //   : 'student',
+  // validPassword: secrets.PROD_VALID_PASSWORD
+  //   ? `${secrets.PROD_VALID_PASSWORD}`
+  //   : 'Password123',
+  // invalidUsername: secrets.PROD_INVALID_USERNAME
+  //   ? `${secrets.PROD_INVALID_USERNAME}`
+  //   : 'stude',
+  // invalidPassword: secrets.PROD_INVALID_PASSWORD
+  //   ? `${secrets.PROD_INVALID_PASSWORD}`
+  //   : 'Password',
 };
