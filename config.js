@@ -1,3 +1,4 @@
+console.log(process.env.CONFIG_SECRETS);
 const secrets = JSON.parse(`${process.env.CONFIG_SECRETS}`);
 
 module.exports = {

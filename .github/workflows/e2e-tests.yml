@@ -8,7 +8,6 @@ jobs:
   test:
     env:
       secrets: '${{ toJSON(secrets) }}'
-      PROD_VALID_USERNAME: ${{ secrets.PROD_VALID_USERNAME }}
 
     runs-on: ubuntu-latest
 
@@ -37,9 +36,9 @@ jobs:
       - name: Run tests
         continue-on-error: true
         run: npm run test
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: Output
           path: output/
-          retention-days: 30
