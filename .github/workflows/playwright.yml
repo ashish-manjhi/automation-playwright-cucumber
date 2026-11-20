@@ -1,19 +1,36 @@
 name: Playwright Tests
+
 on:
   pull_request:
     branches: [main]
+
 jobs:
   test:
-    runs-on: windows-latest
+    env:
+      secrets: '${{ toJSON(secrets) }}'
+
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
         with:
           node-version: 22.18.0
+
       - name: Install dependencies
         run: npm install
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
+
+      - name: Export secrets
+        run: |
+          export CONFIG_SECRETS=$secrets;
+          echo CONFIG_SECRETS
+        shell: bash
 
       - name: Run Playwright tests
         continue-on-error: true
